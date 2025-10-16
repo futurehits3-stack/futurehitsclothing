@@ -18,9 +18,7 @@ export default defineNuxtConfig({
     'nuxt-vuefire'
     //...
   ],
-  auth: {
-      enabled: true
-    },
+  
   sanity: {
     projectId: '129ldwfx'
   },
@@ -43,4 +41,7 @@ export default defineNuxtConfig({
       include: ["@sanity/visual-editing"],
     },
   },
+  auth: {
+      enabled: true
+    },
 })

@@ -7,8 +7,7 @@ export const useBagStore = defineStore('cartStore', {
         bagQuantity: 0
     }),
     actions: {
-        async addToBag (productID, quantity,data,size,swatchColor,image){
-            
+        async addToBag (productID, quantity,data,size,swatchColor,image, productComparePrice){
             const bagLocal = localStorage.getItem("bagLocal")
             let productFound = false
             const passObj = {
@@ -16,6 +15,7 @@ export const useBagStore = defineStore('cartStore', {
                 productQuantity: quantity,
                 productSlug: data.slug,
                 productPrice: data.productPrice,
+                productComparePrice: productComparePrice,
                 productTitle: data.productTitle,
                 productSlug: data.slug.current,
                 productSize: size,

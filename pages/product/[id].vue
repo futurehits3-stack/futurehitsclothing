@@ -3,7 +3,7 @@
     <v-main v-if="data">
         <v-container >
             <v-row >
-                <v-col cols="12" md="8">\{{  }}
+                <v-col cols="12" md="8">
                     <v-img :src="replaceImgString(productMainIMG)" class="rounded-lg"></v-img>
                     
                 </v-col>
@@ -17,7 +17,7 @@
                     <h1 class="text-h3">{{ data[0].productTitle }}</h1>
                     <p class="text-caption text-grey-darken-2 my-2">{{data[0].productDescription[0].children[0].text}}</p>
                     <section id="priceSection" class="my-1">
-                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ data[0].productcomparePrice }}</span></p>
+                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ productComparePrice}}</span></p>
                     </section>
 
                     <section id="rating" class="my-2">
@@ -118,7 +118,7 @@
                         </v-col>
                         <v-col cols="6" md="7">
                             <p>BadNews Shirt</p>
-                            <p class="cartPrice font-weight-bold text-red text-caption">${{productPrice}} <span class="text-black text-decoration-line-through">${{ data[0].productcomparePrice }}</span></p>
+                            <p class="cartPrice font-weight-bold text-red text-caption">${{productPrice}} <span class="text-black text-decoration-line-through">${{ productComparePrice }}</span></p>
                             <section>
                                 <p class="text-caption text-grey-lighten-1">Color: {{swatchColor}}</p>
                                 <p class="text-caption text-grey-lighten-1">Size: {{selectedSize}}</p>
@@ -176,6 +176,7 @@ let selectedQuantity = ref(0)
 let openDrawer = ref(false)
 let productMainIMG = ref('')
 let productPrice = ref('')
+let productComparePrice = ref('')
 const params = useRoute().params
 const queryG = groq `*[_type == "products" && slug.current == '${params.id}']`
 const sanity = useSanity()
@@ -195,11 +196,15 @@ swatchSizes.value = data.value[0].productVariants[0].variantSizes
 productMainIMG.value = data.value[0].productVariants[0].variantPhoto.asset._ref
 swatchSizeText.value = 'Select A Size'
 productPrice.value = data.value[0].productVariants[0].variantPrice
+productComparePrice.value = data.value[0].productVariants[0].variantComparePrice
 const swatchClicked = (p) => {
     if(p.variantColor != swatchColor.value){
         swatchColor.value = p.variantColor
         swatchSizes.value = p.variantSizes
         productMainIMG.value = p.variantPhoto.asset._ref
+        console.log(p)
+        productComparePrice.value = p.variantComparePrice
+        productPrice.value = p.variantPrice
     }
     
 
@@ -216,7 +221,7 @@ const selectAQuantity = (quantity) => {
 const addToBag = async(data) => {
     if(selectedSize.value !== ''){
         
-        const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value)
+        const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value, productComparePrice.value)
         
         if(addToBagPromise){
             openDrawer.value = true
