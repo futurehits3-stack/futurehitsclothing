@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     'nuxt-vuefire'
     //...
   ],
+  auth: {
+      enabled: true
+    },
   sanity: {
     projectId: '129ldwfx'
   },
