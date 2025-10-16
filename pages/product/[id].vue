@@ -1,0 +1,283 @@
+<template>
+<div>
+    <v-main v-if="data">
+        <v-container >
+            <v-row >
+                <v-col cols="12" md="8">\{{  }}
+                    <v-img :src="replaceImgString(productMainIMG)" class="rounded-lg"></v-img>
+                    
+                </v-col>
+                <v-col cols="12" md="4" class="px-3">
+
+                    <div class="my-3">
+                        <p class="text-caption">
+                            <v-icon icon="mdi-arrow-left" size="x-small"></v-icon> {{ data[0].productType }}
+                        </p>
+                    </div>
+                    <h1 class="text-h3">{{ data[0].productTitle }}</h1>
+                    <p class="text-caption text-grey-darken-2 my-2">{{data[0].productDescription[0].children[0].text}}</p>
+                    <section id="priceSection" class="my-1">
+                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ data[0].productcomparePrice }}</span></p>
+                    </section>
+
+                    <section id="rating" class="my-2">
+                        <v-rating v-model="productRating" active-color="orange-lighten-2" color="orange-lighten-1" size="17" density="comfortable" readonly :model-value="4"></v-rating>
+                        <span class="text-caption ml-2">(5 reviews)</span>
+                    </section>
+                    <v-divider></v-divider>
+                    <section class="product-colors my-3">
+                        <p class="sizechart text-caption font-weight-bold mb-2">Color: {{swatchColor}}</p>
+                        <ul id="swatches">
+                            <client-only>
+                            <li v-for="(p, k) in data[0].productVariants" :key="k" class="mr-3" @click="swatchClicked(p)">
+                                <v-avatar :image="replaceImgString(p.variantPhoto.asset._ref)"></v-avatar>
+                            </li>
+                            </client-only>
+                        </ul>
+                    </section>
+                    <v-divider></v-divider>
+                    <section id="tabs" class="mb-4 mt-6">
+                        <p class="sizechart text-caption font-weight-bold mb-2">Size: {{swatchSizeText}}</p>
+                        <v-row>
+                            <v-col cols="6" md="7" xs="7">
+                                <v-select label="Select A Size" :items="swatchSizes" variant="outlined" v-model="selectedSize" @update:modelValue="selectASize(selectedSize)" :error="selectedSizeError"></v-select>
+                            </v-col>
+                            <v-col cols="6" md="5" xs="5">
+                                <v-number-input :max="10" :min="1" control-variant="split" v-model="selectedQuantity" variant="outlined" @update:model-value="selectAQuantity($event)"></v-number-input>
+                            </v-col>
+                        </v-row>
+                        <!-- <ul id="size-swatches">
+                                <li class="mr-2 text-caption text-center" v-for="(SS, KSS) in swatchSizes" :key="KSS">
+                                    <v-fab color="grey-lighten-2" @click="selectASize(SS)">{{ SS }}</v-fab>
+                                </li>
+                            </ul> -->
+                    </section>
+                    <v-divider></v-divider>
+                    <section id="addToBag" class="mb-3 mt-4">
+                        <v-btn rounded="xl" size="large" block color="primary" prepend-icon="mdi-shopping" @click="addToBag(data[0])">Add To Bag</v-btn>
+                    </section>
+                    <section id="saveToFav" class="my-4">
+                        <v-btn rounded="xl" size="large" variant="outlined" block color="grey-darken-3" prepend-icon="mdi-heart-outline">Save To Favorites</v-btn>
+                    </section>
+                    <v-divider></v-divider>
+                    <section id="info-panels" class="mt-4">
+                        <div class="pa-2">
+                            <p class="text-subtitle-1 my-3 text-decoration-underline" @click="goToTarget('#details')">The Details</p>
+                            <v-divider></v-divider>
+                            <p class="text-subtitle-1 my-3 text-decoration-underline" @click="goToTarget('#productFit')">Product Fit</p>
+                            <v-divider></v-divider>
+                            <p class="text-subtitle-1 my-3 text-decoration-underline" @click="goToTarget('#productCare')">Care & Materials</p>
+                            <v-divider></v-divider>
+                            
+                        </div>
+                    </section>
+                </v-col>
+            </v-row>
+            <section id="details" class="pa-4 mt-3 bg-white">
+                <h3 class="text-subtitle-1">The Details</h3>
+                <ul class="ml-5">
+                    <li class="text-caption" v-for="(dets,dK) in data[0].productDetails" :key="dK">
+                        {{dets.productDetail}}
+                    </li>
+                </ul>
+            </section>
+            <v-divider></v-divider>
+            <section id="productFit" class="pa-4 bg-white">
+                <h3 class="text-subtitle-1">Product Fit</h3>
+                <ul class="ml-5">
+                    <li class="text-caption" v-for="(pf,pK) in data[0].productFit" :key="pK">
+                        {{pf.productFit}}
+                    </li>
+                </ul>
+            </section>
+            <v-divider></v-divider>
+            <section id="productCare" class="pa-4 bg-white">
+                <h3 class="text-subtitle-1">Care & Materials</h3>
+                <ul class="ml-5">
+                    <li class="text-caption" v-for="(care,cK) in data[0].productCareMat" :key="cK">
+                        {{care.productCareAndMaterials}}
+                    </li>
+                </ul>
+            </section>
+        </v-container>
+        <client-only>
+        <v-navigation-drawer location="right" temporary v-model="openDrawer" width="350">
+            <v-container>
+                <v-card flat>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat @click="openDrawer = false"><v-icon icon="mdi-close"></v-icon></v-btn>
+                    </v-card-actions>
+                    <v-card-title class="px-0">
+                        <h5 class="text-h5 font-weight-bold">Added To Bag!</h5>
+                    </v-card-title>
+                    <section id="panel-info" class="border-sm pa-2 rounded-lg">
+                         <v-row>
+                        <v-col cols="6" md="5">
+                            <v-img :src="replaceImgString(productMainIMG)" class="rounded-lg"></v-img>
+                        </v-col>
+                        <v-col cols="6" md="7">
+                            <p>BadNews Shirt</p>
+                            <p class="cartPrice font-weight-bold text-red text-caption">${{productPrice}} <span class="text-black text-decoration-line-through">${{ data[0].productcomparePrice }}</span></p>
+                            <section>
+                                <p class="text-caption text-grey-lighten-1">Color: {{swatchColor}}</p>
+                                <p class="text-caption text-grey-lighten-1">Size: {{selectedSize}}</p>
+                                <p class="text-caption text-grey-lighten-1">Quantity: {{selectedQuantity}}</p>
+                            </section>
+                        </v-col>
+                    </v-row>
+                    </section>
+                   
+                    <section id="panelButtons" class="my-3">
+                        <v-row>
+                        <v-col cols="6" md="6">
+                            <v-btn rounded="xl" size="small" variant="outlined" block>Keep Shopping</v-btn>
+                        </v-col>
+                        <v-col cols="6" md="6">
+                            <v-btn rounded="xl" color="primary" size="small" block to="/cart/">View Bag</v-btn>
+                        </v-col>
+                    </v-row>
+                    </section>
+                    
+                </v-card>
+            </v-container>
+            
+            <!-- <template v-slot:prepend>
+                <v-list-item lines="two" prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg" subtitle="Logged in" title="Jane Smith"></v-list-item>
+            </template>
+
+            <v-divider></v-divider>
+
+            <v-list density="compact" nav>
+                <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
+                <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+                <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
+            </v-list> -->
+        </v-navigation-drawer>
+        </client-only>
+    </v-main>
+
+</div>
+</template>
+
+<script setup>
+import {useBagStore} from '~/stores/bag'
+
+
+const bagStore = useBagStore()
+
+let productRating = ref('')
+let swatchColor = ref('')
+let swatchSizes = ref([])
+let swatchSizeText = ref('')
+let selectedSize = ref('')
+let selectedSizeError = ref(false)
+let selectedQuantity = ref(0)
+let openDrawer = ref(false)
+let productMainIMG = ref('')
+let productPrice = ref('')
+const params = useRoute().params
+const queryG = groq `*[_type == "products" && slug.current == '${params.id}']`
+const sanity = useSanity()
+ import { useGoTo } from 'vuetify'
+ const goTo = useGoTo()
+const {
+    data
+} = await useAsyncData('yo', () => sanity.fetch(queryG))
+useHead({
+  title: `${data.value[0].productTitle} | Future Hits Clothing`,
+  meta: [
+    { name: 'description', content: `${data.value[0].productDescription}` },
+  ],
+})
+swatchColor.value = data.value[0].productVariants[0].variantColor
+swatchSizes.value = data.value[0].productVariants[0].variantSizes
+productMainIMG.value = data.value[0].productVariants[0].variantPhoto.asset._ref
+swatchSizeText.value = 'Select A Size'
+productPrice.value = data.value[0].productVariants[0].variantPrice
+const swatchClicked = (p) => {
+    if(p.variantColor != swatchColor.value){
+        swatchColor.value = p.variantColor
+        swatchSizes.value = p.variantSizes
+        productMainIMG.value = p.variantPhoto.asset._ref
+    }
+    
+
+    selectedSize.value = ''
+    swatchSizeText.value = 'Select A Size'
+}
+const selectASize = (size) => {
+    swatchSizeText.value = []
+    swatchSizeText.value = size
+}
+const selectAQuantity = (quantity) => {
+    selectedQuantity.value = quantity
+}
+const addToBag = async(data) => {
+    if(selectedSize.value !== ''){
+        
+        const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value)
+        
+        if(addToBagPromise){
+            openDrawer.value = true
+        }
+
+    }else{
+        selectedSizeError.value = true
+    }
+}
+const options = computed(() => ({
+    duration: 300,
+    easing: 'easeInOutQuart',
+    offset: 0,
+  }))
+const goToTarget = (target) => {
+    console.log(target)
+    goTo(target)
+}
+
+const replaceImgString = (imgstring) => {
+
+    let img = imgstring
+    img = img.replace('image-', '')
+    if (img.indexOf('-jpg') === -1) {
+        img = img.replace('-webp', '.webp')
+    } else {
+        img = img.replace('-jpg', '.jpg')
+    }
+    img = img.replace('-jpg', '.jpg')
+    return `https://cdn.sanity.io/images/129ldwfx/production/${img}`
+}
+const shareData = {
+    title: `${data?.value[0]?.productTitle || ''} | Future Hits Clothing`,
+    text: `View ${data?.value[0]?.productTitle}! Brought to you by Future Hits Clothing`,
+    url: `https://futurehitsclothing.com/product/${data?.value[0]?.slug.current || ''}/`,
+}
+const shareButton =  async() => {
+    try {
+        await navigator.share(shareData);
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+</script>
+
+<style scoped>
+#swatches,
+#size-swatches {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+}
+
+#size-swatches li {
+    background: #E0E0E0;
+}
+
+#swatches li {
+    border: 2px solid #213f27;
+    border-radius: 50%;
+    padding: 3px;
+}
+</style>
