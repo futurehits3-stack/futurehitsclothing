@@ -46,7 +46,6 @@
                                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                     variant="outlined"
                                     ></v-select>
-                                <!-- <v-text-field label="State" variant="outlined"></v-text-field> -->
                             </v-col>
                         </v-row>
                     </div>
@@ -185,7 +184,13 @@ const bagStore = useBagStore()
 let checkoutForm = ref(false)
 let checkoutnumberOfBagItems = ref(0)
 let checkoutCartData = ref(undefined)
-
+useHead({
+    title: `Checkout | Future Hits Clothing`,
+    meta: [{
+        name: 'description',
+        content: 'Checkout your bag!'
+    }, ],
+})
 onMounted(() => {
     bagStore.getBagQuantity()
     checkoutnumberOfBagItems.value = bagStore.bagQuantity
