@@ -46,11 +46,6 @@
                                 <v-number-input :max="10" :min="1" control-variant="split" v-model="selectedQuantity" variant="outlined" @update:model-value="selectAQuantity($event)"></v-number-input>
                             </v-col>
                         </v-row>
-                        <!-- <ul id="size-swatches">
-                                <li class="mr-2 text-caption text-center" v-for="(SS, KSS) in swatchSizes" :key="KSS">
-                                    <v-fab color="grey-lighten-2" @click="selectASize(SS)">{{ SS }}</v-fab>
-                                </li>
-                            </ul> -->
                     </section>
                     <v-divider></v-divider>
                     <section id="addToBag" class="mb-3 mt-4">
