@@ -4,9 +4,11 @@
         <v-app-bar fixed class="position-fixed" elevation="0" density="compact" color="white">
             <template v-slot:append>
                 <div class="mr-5">
-                    <v-badge location="top right" color="red" dot class="mx-2">
+                    <v-btn to="/wishlist/" rounded>
+                    <v-badge location="top right" :color="wishListFound? 'red' : 'black'" dot class="mx-2">
                     <v-icon icon="mdi-heart-outline" color="grey-darken-2"></v-icon>
                 </v-badge>
+                </v-btn>
                 <v-btn to="/cart/" rounded>
                     <v-badge location="top right" color="red" :content="count" class="mx-2" >
                     <v-icon icon="mdi-shopping" color="grey-darken-2"></v-icon>
@@ -44,12 +46,16 @@
 
 <script setup>
 import {useBagStore} from '~/stores/bag'
+import {useWishListStore} from '~/stores/wishlist'
 import { storeToRefs } from 'pinia';
 
 const bagStore = useBagStore()
+const wishStore = useWishListStore()
 const { bagQuantity } = storeToRefs(bagStore);
+const {wishListActive} = storeToRefs(wishStore)
 
 let bagCounter = ref(0)
+let wishListFound = ref(false)
 let count = ref(0)
 const drawer = ref(false)
 const navItems = ref([{
@@ -65,6 +71,12 @@ onMounted(() => {
     } else{
             count.value = bagCounter.value
     }
+
+    wishListFound.value = wishStore.getWishlistQuantity()
+
+    watch(wishListActive, (c, p) => {
+        wishListFound.value = c
+    })
     watch(bagQuantity , (currentNumber, prevNumber) =>{
           count.value = currentNumber
       })

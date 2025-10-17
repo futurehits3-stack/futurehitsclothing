@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { collection, addDoc,updateDoc,doc } from "firebase/firestore"; 
+// import { collection, addDoc,updateDoc,doc } from "firebase/firestore"; 
 export const useBagStore = defineStore('cartStore', {
     state: () => ({
         bag: [],

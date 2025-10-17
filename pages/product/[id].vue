@@ -52,7 +52,7 @@
                         <v-btn rounded="xl" size="large" block color="primary" prepend-icon="mdi-shopping" @click="addToBag(data[0])">Add To Bag</v-btn>
                     </section>
                     <section id="saveToFav" class="my-4">
-                        <v-btn rounded="xl" size="large" variant="outlined" block color="grey-darken-3" prepend-icon="mdi-heart-outline">Save To Favorites</v-btn>
+                        <v-btn rounded="xl" size="large" variant="outlined" block color="grey-darken-3" @click="saveToFavorites(data[0])" prepend-icon="mdi-heart-outline">Save To Favorites</v-btn>
                     </section>
                     <v-divider></v-divider>
                     <section id="info-panels" class="mt-4">
@@ -151,15 +151,36 @@
         </v-navigation-drawer>
         </client-only>
     </v-main>
+    <v-dialog max-width="400" v-model="errorWishlistDialog" >
+        <v-card class="rounded-xl">
+            <v-container>
+                <v-card-actions>
+                <v-spacer></v-spacer>
 
+                <v-btn @click="errorWishlistDialog = false" ><v-icon icon="mdi-close" size="x-large"></v-icon></v-btn>
+            </v-card-actions>
+                
+            <v-card-text>
+                <h4 class="font-weight-bold text-h5 text-red">Error</h4>  
+                <p class="body-1">This item is already in favorites.</p>  
+            </v-card-text>
+            <v-card-actions>
+                <v-btn text="View Favorites" rounded="lg" color="black" to="/wishlist/"></v-btn>
+                <v-btn text="Close" rounded="lg" color="black" @click="errorWishlistDialog = false"></v-btn>
+            </v-card-actions>
+            </v-container>
+            
+        </v-card>
+    </v-dialog>
 </div>
 </template>
 
 <script setup>
 import {useBagStore} from '~/stores/bag'
-
+import { useWishListStore } from '~/stores/wishlist'
 
 const bagStore = useBagStore()
+const  wishListStore = useWishListStore()
 
 let productRating = ref('')
 let swatchColor = ref('')
@@ -172,6 +193,7 @@ let openDrawer = ref(false)
 let productMainIMG = ref('')
 let productPrice = ref('')
 let productComparePrice = ref('')
+let errorWishlistDialog = ref(false)
 const params = useRoute().params
 const queryG = groq `*[_type == "products" && slug.current == '${params.id}']`
 const sanity = useSanity()
@@ -214,7 +236,8 @@ const selectAQuantity = (quantity) => {
     selectedQuantity.value = quantity
 }
 const addToBag = async(data) => {
-    if(selectedSize.value !== ''){
+    if(data){
+         if(selectedSize.value !== ''){
         
         const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value, productComparePrice.value)
         
@@ -224,6 +247,19 @@ const addToBag = async(data) => {
 
     }else{
         selectedSizeError.value = true
+    }
+    }
+   
+}
+const saveToFavorites = async(data) => {
+    if(data){
+        const saveToFav = await wishListStore.addToWishlist(data.productID, data)
+        if(saveToFav === 'found'){
+            errorWishlistDialog.value = true
+        }else{
+            console.log('yo')
+            wishListStore.getWishlistQuantity()
+        }
     }
 }
 const options = computed(() => ({
