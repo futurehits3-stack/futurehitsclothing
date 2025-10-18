@@ -57,7 +57,7 @@
         }
         return `$${total}`
     })
-    
+
     const bagWithoutSavingsTotal = computed(() => {
         let total = 0
         for (let i = 0; i < orderData.length; i++) {
