@@ -34,7 +34,7 @@
                         <p class="text-subtitle-2 font-weight-bold text-primary">SubTotal:</p>
                     </v-col>
                     <v-col cols="6" md="4" xs="3">
-                        <p class="text-subtitle-2 font-weight-bold text-right"><span class="text-grey text-decoration-line-through">{{bagWithoutSavingsTotal}}</span> {{ bagTotal }}</p>
+                        <p class="text-subtitle-2 font-weight-bold text-right"><span class="text-red text-decoration-line-through">{{bagWithoutSavingsTotal}}</span> {{ bagTotal }}</p>
                     </v-col>
                 </v-row>
             </v-card>
@@ -49,31 +49,36 @@
     })
     const { orderData } = props;
     let savingsArray = ref([])
+    let productQuantity = ref(0)
     const bagTotal = computed(() => {
         let total = 0
         for (let i = 0; i < orderData.length; i++) {
             const e = orderData[i];
-            total += Number(e.productPrice)
+            //console.log(e.productQuantity)
+            total += Number(e.productPrice * e.productQuantity)
         }
+       console.log(productQuantity.value)
         return `$${total}`
     })
     const bagWithoutSavingsTotal = computed(() => {
         let total = 0
         for (let i = 0; i < orderData.length; i++) {
             const e = orderData[i];
-            total += Number(e.productComparePrice)
+            total += Number(e.productComparePrice * e.productQuantity)
         }
-        return `$${total}`
+        return `$${Math.round(total)}`
     })
     const savingsTotal = computed(() => {
         let bagTotal = 0
         let bagSaved = 0
+        let qTotal = 0
         for (let i = 0; i < orderData.length; i++) {
             const e = orderData[i];
-            bagTotal += Number(e.productPrice)
-            bagSaved += Number(e.productComparePrice)
-            savingsArray.value.push(Math.round(Number(e.productPrice - e.productComparePrice)))
+            bagTotal += Number(e.productPrice * e.productQuantity)
+            bagSaved += Number(e.productComparePrice * e.productQuantity)
+            savingsArray.value.push(Math.round(Number(e.productPrice - e.productComparePrice)) * e.productQuantity)
         }
+        console.log(savingsArray)
         return `$${Math.round(bagTotal - bagSaved)}`
     })
 </script>
