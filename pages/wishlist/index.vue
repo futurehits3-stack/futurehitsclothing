@@ -17,7 +17,7 @@
                             <v-card>
                                 <v-card-actions class="py-2">
                                     <v-spacer></v-spacer>
-                                    <v-btn color="grey" size="x-small" :to="'/product/'+wish.slug+'/'">
+                                    <v-btn color="primary" size="small" :to="'/product/'+wish.slug+'/'">
                                         <v-icon icon="mdi-bag-personal-outline" ></v-icon>
                                         <v-tooltip
                                                 activator="parent"
@@ -27,7 +27,7 @@
                                 </v-card-actions>
                                 <v-card-text class="pt-1">
                                     <p class="text-body-1 text-grey-darken-4 font-weight-bold text-primary">{{ wish.productTitle }}</p>
-                                    <p class="text-body-1 text-grey-darken-2 font-weight-bold"><span class="text-red text-decoration-line-through">${{ wish.productComparePrice }}</span> ${{ wish.productPrice }}</p>
+                                    <p class="text-subtitle-2 text-grey-darken-2 font-weight-bold"><span class="text-red text-decoration-line-through">${{ wish.productComparePrice }}</span> ${{ wish.productPrice }}</p>
                                     <p class="text-caption text-grey-darken-4"><span v-if="wish.isProductAvailable"><v-icon icon="mdi-circle" size="x-small" color="green"></v-icon> In stock</span><span v-else><v-icon icon="mdi-circle" size="x-small" color="red"></v-icon>  Out Of Stock</span></p>
                                 </v-card-text>
                                 

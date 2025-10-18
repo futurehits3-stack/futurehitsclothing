@@ -1,6 +1,6 @@
 <template>
 <v-main>
-    <v-container>
+    <v-container v-if="numberOfBagItems > 0">
         <v-row>
             <v-col cols="12" md="8" xs="12">
                 <v-row class="my-3">
@@ -104,6 +104,27 @@
             </v-col>
         </v-row>
 
+    </v-container>
+    <v-container>
+        <v-row class="my-3">
+            <v-col cols="12" md="9">
+                <h1 class="text-h5 font-weight-bold text-primary">Shopping Bag</h1>
+            </v-col>
+            <v-col cols="12" md="3">
+                <DialogsSignUpDialog />
+            </v-col>
+        </v-row>
+        <v-card flat class="border-sm text-center pa-5 rounded-lg">
+            <v-card-text>
+                <v-icon icon="mdi-shopping-outline" color="grey-darken-2" size="80"></v-icon>
+            <p class="text-h5 font-weight-bold my-3 ">Your bag is empty. Find something you love!</p>
+            </v-card-text>
+            
+            <v-card-actions>
+            <v-btn text="T-shirts" variant="tonal" color="black"></v-btn>
+        </v-card-actions>
+        </v-card>
+        
     </v-container>
     <client-only>
         <v-navigation-drawer location="right" temporary v-model="openEditCartDrawer" width="350">
@@ -217,7 +238,6 @@ useHead({
 onMounted(() => {
     bagStore.getBagQuantity()
     numberOfBagItems.value = bagStore.bagQuantity
-
     cartData = bagStore.bag
 })
 const editProduct = (data) => {

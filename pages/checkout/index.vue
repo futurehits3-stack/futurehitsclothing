@@ -1,6 +1,6 @@
 <template>
 <v-main>
-    <v-container>
+    <v-container v-if="checkoutnumberOfBagItems > 0">
         <v-row>
             <v-col cols="12" md="7" xs="12" class="px-3">
                 <v-row class="my-3">
@@ -191,11 +191,16 @@ useHead({
         content: 'Checkout your bag!'
     }, ],
 })
-onMounted(() => {
+onMounted(async() => {
     bagStore.getBagQuantity()
-    checkoutnumberOfBagItems.value = bagStore.bagQuantity
-
-    checkoutCartData = bagStore.bag
+    
+    if(bagStore.bagQuantity === 0){
+        await navigateTo({ path: '/cart/' })
+    }else{
+        checkoutnumberOfBagItems.value = bagStore.bagQuantity
+        checkoutCartData = bagStore.bag
+    }
+    
 })
 
 

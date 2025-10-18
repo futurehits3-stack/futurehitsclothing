@@ -11,7 +11,7 @@
                 </v-btn>
                 <v-btn to="/cart/" rounded>
                     <v-badge location="top right" color="red" :content="count" class="mx-2" >
-                    <v-icon icon="mdi-shopping" color="grey-darken-2"></v-icon>
+                    <v-icon icon="mdi-shopping-outline" color="grey-darken-2"></v-icon>
                 </v-badge>
                 </v-btn>
                 

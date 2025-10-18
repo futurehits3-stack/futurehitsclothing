@@ -17,7 +17,7 @@
                     <h1 class="text-h3">{{ data[0].productTitle }}</h1>
                     <p class="text-caption text-grey-darken-2 my-2">{{data[0].productDescription[0].children[0].text}}</p>
                     <section id="priceSection" class="my-1">
-                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ productComparePrice}}</span></p>
+                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ productComparePrice}}</span> <v-chip color="green" label size="small" density="comfortable" v-if="productComparePrice">Save {{savings}}</v-chip></p>
                     </section>
 
                     <section id="rating" class="my-2">
@@ -201,7 +201,7 @@ const sanity = useSanity()
  const goTo = useGoTo()
 const {
     data
-} = await useAsyncData('yo', () => sanity.fetch(queryG))
+} = await useAsyncData(`product:${params.id}`, () => sanity.fetch(queryG))
 useHead({
   title: `${data.value[0].productTitle} | Future Hits Clothing`,
   meta: [
@@ -219,7 +219,6 @@ const swatchClicked = (p) => {
         swatchColor.value = p.variantColor
         swatchSizes.value = p.variantSizes
         productMainIMG.value = p.variantPhoto.asset._ref
-        console.log(p)
         productComparePrice.value = p.variantComparePrice
         productPrice.value = p.variantPrice
     }
@@ -239,7 +238,7 @@ const addToBag = async(data) => {
     if(data){
          if(selectedSize.value !== ''){
         
-        const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value, productComparePrice.value)
+        const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value,productPrice.value, productComparePrice.value)
         
         if(addToBagPromise){
             openDrawer.value = true
@@ -251,13 +250,18 @@ const addToBag = async(data) => {
     }
    
 }
+const savings = computed(() => {
+    const difference = productComparePrice.value - productPrice.value;
+    
+    const percentage = Math.round((difference/productComparePrice.value) * 100);
+    return percentage + '%'
+})
 const saveToFavorites = async(data) => {
     if(data){
         const saveToFav = await wishListStore.addToWishlist(data.productID, data)
         if(saveToFav === 'found'){
             errorWishlistDialog.value = true
         }else{
-            console.log('yo')
             wishListStore.getWishlistQuantity()
         }
     }
