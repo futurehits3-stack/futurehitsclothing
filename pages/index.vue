@@ -11,7 +11,7 @@
                             <ImagesReplaceImg :image="card.productImage.asset._ref"/>
                             
                         </nuxt-link>
-                        <v-card-actions class="py-2">
+                        <v-card-actions class="pt-2 pb-1">
                                     <v-spacer></v-spacer>
                                     <v-btn color="grey" size="small" :to="'/product/'+card.slug.current+'/'">
                                         <v-icon icon="mdi-bag-personal-outline" ></v-icon>
@@ -20,6 +20,9 @@
                         <v-card-text class="pt-1">
                                 <p class="text-subtitle-1 text-grey-darken-3">{{card.productTitle}}</p>
                                 <p class="text-caption font-weight-bold text-grey-darken-3"><span class="text-red text-decoration-line-through">${{ card.productVariants[0].variantComparePrice }}</span> ${{card.productVariants[0].variantPrice}} </p>
+                                <div class="my-1">
+                                    <v-chip color="green" label size="small" density="comfortable" v-if="card.productVariants[0].variantComparePrice">Save {{savings(card.productVariants[0].variantPrice, card.productVariants[0].variantComparePrice)}}</v-chip>
+                                </div>
                             </v-card-text>
                     </v-card>
                 </v-col>
@@ -40,7 +43,12 @@ const {
     data
 } = await useAsyncData(`product:${params.id}`, () => sanity.fetch(queryG))
 
-
+const savings = (price, cPrice) => {
+    const difference = cPrice - price;
+    
+    const percentage = Math.round((difference/cPrice) * 100);
+    return percentage + '%'
+}
 // const shareData = {
 //     title: `${data?.value[0]?.title || ''} | Cinematics Through My Eyes`,
 //     text: `View ${data?.value[0]?.title}'s Videos and Photos!`,
