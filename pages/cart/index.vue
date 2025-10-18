@@ -60,44 +60,7 @@
 
                     </v-form>
                 </section>
-                <section class="mt-3">
-                    <h3 class="text-subtitle-1 font-weight-bold mb-3 text-primary">Order Summary</h3>
-                    <v-card id="orderSummary" class="border-thin pa-5" rounded="lg" flat>
-                        <v-row>
-                            <v-col cols="12" md="9">
-                                <p class="text-subtitle-2 font-weight-bold text-primary">Bag:</p>
-                            </v-col>
-                            <v-col cols="12" md="3">
-                                <p class="text-subtitle-2 font-weight-bold text-right">$100</p>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12" md="9">
-                                <p class="text-subtitle-2 font-weight-bold text-primary">Savings:</p>
-                                <p class="pa-2 text-green text-caption">-$10 <span class="text-grey-lighten-1 ">item discounts</span></p>
-                            </v-col>
-                            <v-col cols="12" md="3">
-                                <p class="text-subtitle-2 font-weight-bold text-green text-right">-$100</p>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12" md="9">
-                                <p class="text-subtitle-2 font-weight-bold text-primary">Shipping:</p>
-                            </v-col>
-                            <v-col cols="12" md="3">
-                                <p class="text-subtitle-2 font-weight-bold text-right">$5.95</p>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12" md="9">
-                                <p class="text-subtitle-2 font-weight-bold text-primary">SubTotal:</p>
-                            </v-col>
-                            <v-col cols="12" md="3">
-                                <p class="text-subtitle-2 font-weight-bold text-right"><span class="text-grey text-decoration-line-through">$125</span> $95</p>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </section>
+                <CartOrderSummary :orderData="bagStore.bag"/>
                 <section class="my-3">
                     <v-btn text="Let's Checkout" block color="primary" rounded="xl" append-icon="mdi-chevron-right" to="/checkout/"></v-btn>
                 </section>
@@ -105,7 +68,7 @@
         </v-row>
 
     </v-container>
-    <v-container>
+    <v-container v-else>
         <v-row class="my-3">
             <v-col cols="12" md="9">
                 <h1 class="text-h5 font-weight-bold text-primary">Shopping Bag</h1>

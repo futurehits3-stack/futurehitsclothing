@@ -14,14 +14,15 @@
                             <v-icon icon="mdi-arrow-left" size="x-small"></v-icon> {{ data[0].productType }}
                         </p>
                     </div>
-                    <h1 class="text-h3">{{ data[0].productTitle }}</h1>
+                    <h1 class="text-h4">{{ data[0].productTitle }}</h1>
                     <p class="text-caption text-grey-darken-2 my-2">{{data[0].productDescription[0].children[0].text}}</p>
                     <section id="priceSection" class="my-1">
-                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ productComparePrice}}</span> <v-chip color="green" label size="small" density="comfortable" v-if="productComparePrice">Save {{savings}}</v-chip></p>
+                        <p class="price text-subtitle-1 font-weight-bold">${{productPrice}} <span class="text-red text-decoration-line-through">${{ productComparePrice}}</span> </p>
+                        <v-chip color="green" label size="small" density="comfortable" v-if="productComparePrice">Save {{savings}}</v-chip>
                     </section>
 
-                    <section id="rating" class="my-2">
-                        <v-rating v-model="productRating" active-color="orange-lighten-2" color="orange-lighten-1" size="17" density="comfortable" readonly :model-value="4"></v-rating>
+                    <section id="rating" class="mt-1 mb-2">
+                        <v-rating v-model="productRating" active-color="black" color="black" size="17" density="comfortable" readonly :model-value="4"></v-rating>
                         <span class="text-caption ml-2">(5 reviews)</span>
                     </section>
                     <v-divider></v-divider>
@@ -222,8 +223,6 @@ const swatchClicked = (p) => {
         productComparePrice.value = p.variantComparePrice
         productPrice.value = p.variantPrice
     }
-    
-
     selectedSize.value = ''
     swatchSizeText.value = 'Select A Size'
 }
@@ -237,16 +236,17 @@ const selectAQuantity = (quantity) => {
 const addToBag = async(data) => {
     if(data){
          if(selectedSize.value !== ''){
+        //check data again
         
         const addToBagPromise = await bagStore.addToBag(data.productID, selectedQuantity.value, data, selectedSize.value, swatchColor.value, productMainIMG.value,productPrice.value, productComparePrice.value)
-        
-        if(addToBagPromise){
-            openDrawer.value = true
-        }
+            
+            if(addToBagPromise){
+                openDrawer.value = true
+            }
 
-    }else{
-        selectedSizeError.value = true
-    }
+        }else{
+            selectedSizeError.value = true
+        }
     }
    
 }

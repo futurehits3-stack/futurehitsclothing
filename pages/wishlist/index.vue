@@ -12,8 +12,10 @@
                     </section>
                 <section v-else class="mt-4">
                     <v-row>
-                        <v-col cols="3" md="3" v-for="(wish,wk) in wishlistArr" :key="wk">
-                            <v-img :src="replaceImgString(wish.productImage)" height="160" cover top></v-img>
+                        <v-col cols="6" md="3" v-for="(wish,wk) in wishlistArr" :key="wk">
+                            <nuxt-link :to="`/product/${wish.slug}/`">
+                                <v-img :src="replaceImgString(wish.productImage)" height="160" cover top></v-img>
+                            </nuxt-link>
                             <v-card>
                                 <v-card-actions class="py-2">
                                     <v-spacer></v-spacer>

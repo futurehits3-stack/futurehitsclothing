@@ -10,7 +10,6 @@ export const useBagStore = defineStore('cartStore', {
         async addToBag (productID, quantity,data,size,swatchColor,image,productPrice, productComparePrice){
             const bagLocal = localStorage.getItem("bagLocal")
             let productFound = false
-            console.log(data)
             const passObj = {
                 productID,
                 productQuantity: quantity,

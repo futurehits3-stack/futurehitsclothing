@@ -1,17 +1,17 @@
 <template>
 <div class="bg-white">
     <v-app>
-        <v-app-bar fixed class="position-fixed" elevation="0" density="compact" color="white">
+        <v-app-bar fixed class="position-fixed border-b-sm" elevation="0" density="compact" color="grey-lighten-4">
             <template v-slot:append>
                 <div class="mr-5">
                     <v-btn to="/wishlist/" rounded>
                     <v-badge location="top right" :color="wishListFound? 'red' : 'black'" dot class="mx-2">
-                    <v-icon icon="mdi-heart-outline" color="grey-darken-2"></v-icon>
+                    <v-icon icon="mdi-heart-outline" color="grey-darken-2" size="large"></v-icon>
                 </v-badge>
                 </v-btn>
                 <v-btn to="/cart/" rounded>
                     <v-badge location="top right" color="red" :content="count" class="mx-2" >
-                    <v-icon icon="mdi-shopping-outline" color="grey-darken-2"></v-icon>
+                    <v-icon icon="mdi-shopping-outline" color="grey-darken-2" size="large"></v-icon>
                 </v-badge>
                 </v-btn>
                 
@@ -19,11 +19,11 @@
                 
             </template>
         </v-app-bar>
-        <v-app-bar fixed class="position-fixed" :elevation="2" color="white">
-            <v-app-bar-title>FHClothing</v-app-bar-title>
-            <template v-slot:prepend>
+        <v-app-bar fixed class="position-fixed" :elevation="4" color="white" height="94">
+            <v-app-bar-title class="text-center font-weight-bold text-primary">Future Hits Clothing</v-app-bar-title>
+            <!-- <template v-slot:prepend>
                 <v-app-bar-nav-icon color="black" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-            </template>
+            </template> -->
             
             <!-- <v-app-bar-title><span class="font-weight-black"><img :src="photoHighref2" id="profileHeadIMG"/></span></v-app-bar-title> -->
         </v-app-bar>
@@ -83,3 +83,8 @@ onMounted(() => {
     
 })
 </script>
+<style scoped>
+.v-toolbar__content > .v-toolbar-title{
+    margin-inline-start: 0px;
+}
+</style>
