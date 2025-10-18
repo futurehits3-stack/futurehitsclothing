@@ -49,15 +49,12 @@
     })
     const { orderData } = props;
     let savingsArray = ref([])
-    let productQuantity = ref(0)
     const bagTotal = computed(() => {
         let total = 0
         for (let i = 0; i < orderData.length; i++) {
             const e = orderData[i];
-            //console.log(e.productQuantity)
             total += Number(e.productPrice * e.productQuantity)
         }
-       console.log(productQuantity.value)
         return `$${total}`
     })
     const bagWithoutSavingsTotal = computed(() => {
@@ -71,14 +68,12 @@
     const savingsTotal = computed(() => {
         let bagTotal = 0
         let bagSaved = 0
-        let qTotal = 0
         for (let i = 0; i < orderData.length; i++) {
             const e = orderData[i];
             bagTotal += Number(e.productPrice * e.productQuantity)
             bagSaved += Number(e.productComparePrice * e.productQuantity)
             savingsArray.value.push(Math.round(Number(e.productPrice - e.productComparePrice)) * e.productQuantity)
         }
-        console.log(savingsArray)
         return `$${Math.round(bagTotal - bagSaved)}`
     })
 </script>

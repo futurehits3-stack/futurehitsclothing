@@ -41,7 +41,5 @@ export default defineNuxtConfig({
       include: ["@sanity/visual-editing"],
     },
   },
-  auth: {
-      enabled: true
-    },
+  auth: false
 })
