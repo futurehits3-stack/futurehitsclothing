@@ -15,7 +15,7 @@
                 <v-form class="my-5" v-model="signInForm">
                     <v-text-field label="Email" variant="outlined" v-model="signInFormOBJ.email" :rules="[formRules.emailRules, formRules.email,formRules.emailCounter]" required></v-text-field>
 
-                    <v-text-field label="Password" type="password" variant="outlined" v-model="signInFormOBJ.password" :rules="[formRules.passwordRules, formRules.passwordCounter]" required></v-text-field>
+                    <v-text-field label="Password" type="password" variant="outlined" v-model="signInFormOBJ.password" :rules="[formRules.passwordRules, formRules.passwordCounter, formRules.passwordCounterLess]" required></v-text-field>
                     <v-row>
                         <v-col cols="6" md="6">
                             <span class="text-caption">8-25 characters</span>
@@ -51,7 +51,8 @@ const formRules = ref({
       return pattern.test(value) || 'Invalid e-mail.'
     },
     emailCounter: value => value.length <= 20 || 'Max 20 characters',
-    passwordCounter: value => value.length <= 20 || 'Max 20 characters',
+    passwordCounter: value => value.length <= 25 || 'Max 25 characters',
+    passwordCounterLess: value => value.length > 8 || 'Need At Least 8 characters',
 })
 
 const signIn = () => {

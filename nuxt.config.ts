@@ -30,6 +30,10 @@ export default defineNuxtConfig({
       appId: '1:1087959510209:web:7e1c49a3fc00162b937840',
       // there could be other properties depending on the project
     },
+    auth: {
+      enabled: true,
+      sessionCookie: true
+    },
   },
   vite: {
     vue: {
@@ -41,7 +45,5 @@ export default defineNuxtConfig({
       include: ["@sanity/visual-editing"],
     },
   },
-  auth: {
-      enabled: true
-    },
+  
 })
