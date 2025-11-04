@@ -24,11 +24,13 @@ export default defineNuxtConfig({
   },
   vuefire: {
     config: {
-      apiKey: 'AIzaSyCZygWXapIjMTzpajcKy7W-L76zkR7TzrI',
-      authDomain: 'futurehitsclothing.firebaseapp.com',
-      projectId: 'futurehitsclothing',
-      appId: '1:1087959510209:web:7e1c49a3fc00162b937840',
-      // there could be other properties depending on the project
+      apiKey: "AIzaSyCZygWXapIjMTzpajcKy7W-L76zkR7TzrI",
+      authDomain: "futurehitsclothing.firebaseapp.com",
+      projectId: "futurehitsclothing",
+      storageBucket: "futurehitsclothing.firebasestorage.app",
+      messagingSenderId: "1087959510209",
+      appId: "1:1087959510209:web:8619df43aeda682e937840",
+      measurementId: "G-DT44LH9S68"
     },
     auth: {
       enabled: true,
